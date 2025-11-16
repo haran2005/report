@@ -6,6 +6,7 @@ import { Input } from '../base/Input'
 
 interface FormData {
   date: string;
+  userName?:string;
   report: string;
 }
 
@@ -17,14 +18,14 @@ function ReportForm() {
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
-  const username = user?.email.split('@');
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.report.trim()) return alert('Report cannot be empty');
 
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/reports/all', formData);
+      await axios.post(`${import.meta.env.BASE_URL}/api/reports/all`, formData);
 
       setSuccess('Report submitted successfully!');
       setFormData({ ...formData, report: '' });
@@ -41,10 +42,10 @@ function ReportForm() {
      <section className="w-[450px] h-auto rounded-2xl bg-white border-[rgba(0, 0, 0, 0.1)] px-5 border ">
           <header className="w-full h-auto m-auto">
             <h1 className="heading text-2xl my-2.5 text-center">
-              Welcome Back {username[1]}
+              Welcome Back 
             </h1>
             <p className="text text-xl mb-2.5 mt-1 text-center">
-              Enter your Details
+              Enter your Details {user?.name}
             </p>
             {success && (
         <div className="mb-4 p-3 bg-green-100 text-green-800 rounded-lg">

@@ -1,6 +1,10 @@
+// server/src/middleware/auth.ts
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
+// ──────────────────────────────────────────────────────────────
+// 1. Extend Express Request with user payload
+// ──────────────────────────────────────────────────────────────
 export interface JwtPayload {
   id: string;
   email: string;
@@ -15,19 +19,33 @@ declare global {
   }
 }
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-
-  if (!token) {
-    return res.status(401).json({ message: 'No token, access denied' });
+// ──────────────────────────────────────────────────────────────
+// 2. Middleware
+// ──────────────────────────────────────────────────────────────
+const authMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  // Get token from: "Authorization: Bearer <token>"
+  const authHeader = req.header('Authorization');
+  if (!authHeader?.startsWith('Bearer ')) {
+    return void res.status(401).json({ message: 'No token, access denied' });
   }
 
+  const token = authHeader.split(' ')[1];
+
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
-    req.user = decoded;
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string
+    ) as JwtPayload;
+
+    req.user = decoded; // Now typed!
     next();
   } catch (err) {
-    res.status(401).json({ message: 'Invalid token' });
+    console.error('JWT verification failed:', err);
+    res.status(401).json({ message: 'Invalid or expired token' });
   }
 };
 

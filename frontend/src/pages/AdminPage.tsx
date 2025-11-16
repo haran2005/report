@@ -29,7 +29,7 @@ function AdminPage() {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/reports/all');
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/reports/all`);
         setReports(res.data.reports || []);
       } catch (err: any) {
         setError(err.response?.data?.message || 'Failed to load reports');

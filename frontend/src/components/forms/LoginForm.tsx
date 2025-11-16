@@ -8,21 +8,9 @@ import { useNavigate } from 'react-router-dom';
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const { login } = useAuth();
-  // const navigate = useNavigate();
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     await login(email, password);
-  //     navigate('/');
-  //   } catch (err) {
-  //     alert('Login failed');
-  //   }
-  // };
   const { login } = useAuth();
-const navigate = useNavigate();
-const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -30,13 +18,13 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   setLoading(true);
   try {
-    const loggedInUser = await login(email, password); // gets user with role
+    const loggedInUser = await login(email, password);
 
     // Role-based redirection
     if (loggedInUser.role === 'admin') {
       navigate('/admin', { replace: true });
     } else {
-      navigate('/', { replace: true }); // Report page for normal users
+      navigate('/', { replace: true }); 
     }
   } catch (err: any) {
     alert(err.response?.data?.message || 'Login failed. Check your credentials.');

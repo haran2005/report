@@ -72,14 +72,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const loadUser = async () => {
       const token = localStorage.getItem('token');
+      console.log("get token sucessfully")
       if (!token) {
         setIsLoading(false);
+        console.log("no token found")
         return;
       }
 
       try {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        const res = await axios.get('http://localhost:5000/api/auth/me'); // endpoint to get current user
+        const res = await axios.get('/api/auth/me'); // endpoint to get current user
         setUser(res.data.user);
       } catch (err) {
         localStorage.removeItem('token');
@@ -93,11 +95,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string): Promise<User> => {
-    const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+    const res = await axios.post('/api/auth/login', { email, password });
 
     const { token, user } = res.data;
 
     localStorage.setItem('token', token);
+    console.log('token created')
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     setUser(user);
