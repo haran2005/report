@@ -1,7 +1,8 @@
 import desflyer from '../assets/desflyer.png';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { format } from 'date-fns';
+import { api } from '../context/AuthContext';
 
 interface Report {
   _id: string;
@@ -13,12 +14,11 @@ interface Report {
 
 // Map usernames to employee codes (customize this!)
 const EMPLOYEE_MAP: Record<string, string> = {
-  'DF_001': 'DF-01',
-  'DF_002': 'DF-02',
-  'DF_003': 'DF-03',
-  'DF_004': 'DF-04',
-  'DF_005': 'DF-05',
-  // Add more as needed
+  'df001@desflyer.com': 'DF-01',
+  'df002@desflyer.com': 'DF-02',
+  'df003@desflyer.com': 'DF-03',
+  'df004@desflyer.com': 'DF-04',
+  'df005@desflyer.com': 'DF-05',
 };
 
 function AdminPage() {
@@ -29,7 +29,7 @@ function AdminPage() {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/reports/all`);
+        const res = await api.get('/reports/all');
         setReports(res.data.reports || []);
       } catch (err: any) {
         setError(err.response?.data?.message || 'Failed to load reports');
@@ -77,92 +77,88 @@ function AdminPage() {
   }
 
   return (
-    <section className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <header className="text-center mb-8">
-          <img src={desflyer} alt="DesFlyer Logo" className="h-16 mx-auto mb-4" />
-          <h1 className="text-3xl font-bold text-gray-800">
-            Employee Daily Report System
-          </h1>
-          <p className="text-gray-600 mt-2">Admin Dashboard</p>
-        </header>
+      <section className="bg-gray-50 py-8">
+        <div className="mx-auto">
+          <header className="w-full text-center mb-8">
+            <img src={desflyer} alt="DesFlyer Logo" className="h-16 mx-auto mb-4" />
+            <h1 className="text-3xl font-bold text-gray-800">
+              Employee Daily Report System
+            </h1>
+          </header>
 
-        {/* Empty State */}
-        {reports.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-lg text-gray-600">No reports submitted yet.</p>
-          </div>
-        ) : (
-          /* Responsive Table Container */
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full table-auto border-collapse">
-                <thead className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider sticky left-0 bg-blue-700 z-10">
-                      Date
-                    </th>
-                    {employees.map((emp) => (
-                      <th
-                        key={emp.username}
-                        className="px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider"
-                      >
-                        {emp.code}
+          {reports.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-lg text-gray-600">No reports submitted yet.</p>
+            </div>
+          ) : (
+            <div className="bg-white shadow-lg overflow-x-hidden">
+              <div className="w-full">
+                <table className="table-auto border border-collapse">
+                  <thead className="border bg-white">
+                    <tr>
+                      <th className="px-6 py-4 text-left border text-sm font-semibold uppercase tracking-wider sticky left-0 z-10">
+                        Date
                       </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {uniqueDates.map((date) => (
-                    <tr
-                      key={date}
-                      className="hover:bg-gray-50 transition-colors"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 sticky left-0 bg-white z-10 border-r">
-                        {format(new Date(date), 'dd MMM yyyy')}
-                        <span className="block text-xs text-gray-500">
-                          {format(new Date(date), 'EEEE')}
-                        </span>
-                      </td>
-                      {employees.map((emp) => {
-                        const report = getReportForUserAndDate(emp.username, date);
-                        const isEmpty = report === '—';
-
-                        return (
-                          <td
-                            key={emp.username}
-                            className={`px-6 py-4 text-sm ${
-                              isEmpty ? 'text-gray-400 italic' : 'text-gray-800'
-                            }`}
-                          >
-                            {isEmpty ? (
-                              <span className="text-center block">—</span>
-                            ) : (
-                              <div className="max-w-xs">
-                                <p className="whitespace-pre-line text-xs leading-relaxed">
-                                  {report}
-                                </p>
-                              </div>
-                            )}
-                          </td>
-                        );
-                      })}
+                      {employees.map((emp) => (
+                        <th
+                          key={emp.username}
+                          className="px-6 py-4 text-center border text-sm font-semibold uppercase tracking-wider"
+                        >
+                          {emp.code}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {uniqueDates.map((date) => (
+                      <tr
+                        key={date}
+                        className="border hover:bg-gray-50 transition-colors"
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap border text-sm font-medium text-gray-900 sticky left-0 bg-white z-10 border-r">
+                          {format(new Date(date), 'dd MMM yyyy')}
+                          <span className="block text-xs text-gray-500">
+                            {format(new Date(date), 'EEEE')}
+                          </span>
+                        </td>
+                        {employees.map((emp) => {
+                          const report = getReportForUserAndDate(emp.username, date);
+                          const isEmpty = report === '—';
 
-            {/* Legend */}
-            <div className="px-6 py-3 bg-gray-50 border-t text-xs text-gray-600">
-              <span className="inline-block w-3 h-3 bg-gray-300 rounded mr-1"></span>{' '}
-              — No report submitted
+                          return (
+                            <td
+                              key={emp.username}
+                              className={`px-6 py-4 text-sm border border-black ${
+                                isEmpty ? 'text-gray-400 italic' : 'text-gray-800'
+                              }`}
+                            >
+                              {isEmpty ? (
+                                <span className="text-center block">—</span>
+                              ) : (
+                                <div className="max-w-xs">
+                                  <p className="whitespace-pre-line text-xs leading-relaxed">
+                                    {report}
+                                  </p>
+                                </div>
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Legend */}
+              <div className="w-full py-3 bg-gray-50 border-t text-xs text-gray-600">
+                <span className="inline-block w-3 h-3 bg-gray-300 rounded mr-1"></span>{' '}
+                — No report submitted
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    </section>
+          )}
+        </div>
+      </section>
   );
 }
 

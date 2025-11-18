@@ -25,7 +25,7 @@ function ReportForm() {
 
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.BASE_URL}/api/reports/all`, formData);
+      await axios.post('/api/reports/all', formData);
 
       setSuccess('Report submitted successfully!');
       setFormData({ ...formData, report: '' });
@@ -45,7 +45,7 @@ function ReportForm() {
               Welcome Back 
             </h1>
             <p className="text text-xl mb-2.5 mt-1 text-center">
-              Enter your Details {user?.name}
+              Enter your Details
             </p>
             {success && (
         <div className="mb-4 p-3 bg-green-100 text-green-800 rounded-lg">

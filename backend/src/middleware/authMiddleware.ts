@@ -2,9 +2,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-// ──────────────────────────────────────────────────────────────
-// 1. Extend Express Request with user payload
-// ──────────────────────────────────────────────────────────────
+
 export interface JwtPayload {
   id: string;
   email: string;
@@ -19,9 +17,6 @@ declare global {
   }
 }
 
-// ──────────────────────────────────────────────────────────────
-// 2. Middleware
-// ──────────────────────────────────────────────────────────────
 const authMiddleware = (
   req: Request,
   res: Response,

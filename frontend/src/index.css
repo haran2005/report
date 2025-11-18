@@ -10,9 +10,12 @@
 }
 
 body {
+  width: 100vw;
   margin: 0;
-  display: flex;
-  place-items: center;
+  padding: 0;
+  box-sizing: border-box;
+  /* display: flex;
+  place-items: center; */
   min-width: 320px;
   min-height: 100vh;
   background: linear-gradient(135deg, rgba(3, 2, 19, 0.05) 0%, #FFFFFF 50%, rgba(236, 238, 242, 0.1) 100%);

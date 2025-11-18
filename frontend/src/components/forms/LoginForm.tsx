@@ -23,8 +23,10 @@ const handleSubmit = async (e: React.FormEvent) => {
     // Role-based redirection
     if (loggedInUser.role === 'admin') {
       navigate('/admin', { replace: true });
+      console.log("login as admin")
     } else {
       navigate('/', { replace: true }); 
+      console.log("login as user")
     }
   } catch (err: any) {
     alert(err.response?.data?.message || 'Login failed. Check your credentials.');

@@ -1,4 +1,3 @@
-// routes/report.ts
 import express from 'express';
 import Report from '../models/Report';
 import authMiddleware from '../middleware/authMiddleware';
@@ -7,7 +6,6 @@ const router = express.Router();
 
 router.post('/submit', authMiddleware, async (req: express.Request, res: express.Response) => {
   try {
-    // ADD THIS CHECK — THIS IS THE FIX
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized - No user data' });
     }
@@ -20,7 +18,7 @@ router.post('/submit', authMiddleware, async (req: express.Request, res: express
 
     const newReport = new Report({
       userId: req.user.id,
-      username: req.user.email || 'unknown@user.com', // safe fallback
+      username: req.user.email,
       date: date ? new Date(date) : new Date(),
       report: report.trim(),
     });
@@ -40,11 +38,9 @@ router.post('/submit', authMiddleware, async (req: express.Request, res: express
     });
   }
 });
-// routes/report.ts  (add this new GET route)
 
 router.get('/all', authMiddleware, async (req: express.Request, res: express.Response) => {
   try {
-    // Optional: Only allow admin to see all reports
     if (req.user?.role !== 'admin') {
       return res.status(403).json({ message: 'Access denied. Admin only.' });
     }
