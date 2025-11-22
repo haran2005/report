@@ -18,7 +18,7 @@ interface AuthContextType {
 
 // 1. Create a dedicated Axios instance
 export const api = axios.create({
-  baseURL: 'https://daily-report-orcin.vercel.app',
+  baseURL: '/api',
   timeout: 10000,
 });
 
