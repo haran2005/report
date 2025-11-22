@@ -15,7 +15,7 @@ interface AuthContextType {
   logout: () => void;
   isLoading: boolean;
 }
-
+const API_URL= import.meta.env.VITE_API_URL
 // 1. Create a dedicated Axios instance
 export const api = axios.create({
   baseURL: '/api',
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       try {
-        const res = await api.get('/auth/me');
+        const res = await api.get(`${API_URL}/auth/me`);
         setUser(res.data.user);
       } catch (err: any) {
         console.warn('Auto-login failed (token invalid/expired)', err);
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Login function
   const login = async (email: string, password: string): Promise<User> => {
     try {
-      const res = await api.post('/auth/login', { email, password });
+      const res = await api.post(`${API_URL}/auth/login`, { email, password });
       const { token, user } = res.data;
 
       localStorage.setItem('token', token);
