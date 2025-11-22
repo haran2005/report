@@ -77,7 +77,7 @@ function AdminPage() {
   }
 
   return (
-      <section className="bg-gray-50 py-8">
+      <section className="w-full bg-gray-50 py-8">
         <div className="mx-auto">
           <header className="w-full text-center mb-8">
             <img src={desflyer} alt="DesFlyer Logo" className="h-16 mx-auto mb-4" />
@@ -92,8 +92,8 @@ function AdminPage() {
             </div>
           ) : (
             <div className="bg-white shadow-lg overflow-x-hidden">
-              <div className="w-full">
-                <table className="table-auto border border-collapse">
+              <div className="w-full px-5">
+                <table className="w-full table-auto border border-collapse">
                   <thead className="border bg-white">
                     <tr>
                       <th className="px-6 py-4 text-left border text-sm font-semibold uppercase tracking-wider sticky left-0 z-10">
