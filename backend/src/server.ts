@@ -7,7 +7,13 @@ import reportRoutes from './routes/report';
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin:[
+    "https://report-beige.vercel.app/",
+    "https://localhost:5173"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
