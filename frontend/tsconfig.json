@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "https://report-1cl0.onrender.com",
+    "baseUrl": "https://report-1cl0.onrender.com/api",
     "paths": {
       "@/*": ["src/*"]
     }

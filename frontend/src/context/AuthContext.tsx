@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       try {
-        const res = await api.get('api/auth/me');
+        const res = await api.get('/auth/me');
         setUser(res.data.user);
       } catch (err: any) {
         console.warn('Auto-login failed (token invalid/expired)', err);
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Login function
   const login = async (email: string, password: string): Promise<User> => {
     try {
-      const res = await api.post('api/auth/login', { email, password });
+      const res = await api.post('/auth/login', { email, password });
       const { token, user } = res.data;
 
       localStorage.setItem('token', token);
